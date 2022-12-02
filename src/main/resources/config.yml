@@ -1,0 +1,11 @@
+reloadEnabled: true
+language: 'en'
+prefixFormat: '&7[&6MasterBuilders&7] '
+topics:
+  - Dog
+  - Cat
+  - Snake
+  - Mouse
+  - Ur Mom
+offset: 5
+build_time: 2700

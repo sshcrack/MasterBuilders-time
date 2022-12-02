@@ -1,0 +1,37 @@
+onlyplayer: "Only a player can use this command!"
+noPerm: "Not enough permissions to use this command"
+invalidArgs: "Invalid Arguments given"
+
+invite:
+  not_matching: "Player could not be found"
+  team_required: "&cCreate a team before you can invite players."
+  invited: "&7Player &6%s&7 has been invited."
+  invite_message: "&7You have been invited by &6%s&7 to their team. Click &6&lhere&r&7 to join"
+  invite_self: "&cYou can't invite yourself."
+accept:
+  not_found: "&cPlayer that invited you could not be found."
+  joined: "&6Joined team."
+  passive_join: "&7Player &6%s&7 joined your team."
+  already_in_team: "&cYou are already in a team."
+  not_invited: "&cYou have not been invited to that team."
+create:
+  team_leave: "&cYou can't be in a team to create one"
+  created: "&aTeam &6%s &acreated!"
+  exists: "&cA team with that name exists already."
+leave:
+  already: "&6Already not in a team"
+  left: "&aTeam left."
+  left_passive: "&7Player &6%s&7 left your team."
+start:
+  not_in_team: "&cYou have to be in a team."
+  topic:
+    title: "&6Select topic"
+    selected: "&7Selected topic &6%s"
+timer:
+  units:
+    dateFormat: '%s days %s:%s:%s'
+    hourFormat: '%s:%s:%s'
+    minuteFormat: '%s:%s'
+scoreboard:
+  topic: "Topic: "
+  time_left: "Time left: "

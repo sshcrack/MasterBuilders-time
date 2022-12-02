@@ -1,0 +1,21 @@
+name: MasterBuilders
+version: '${project.version}'
+main: me.sshcrack.masterbuilders.Main
+api-version: 1.19
+authors: [ sshcrack ]
+description: MasterBuilders with offline time and stuff
+website: https://sshcrack.me
+depend:
+  - WorldGuard
+  - WorldEdit
+permissions:
+  masterbuilders.standard:
+    description: Standard perms
+    default: true
+  masterbuilders.create:
+    description: Permission to create a team
+    default: true
+  masterbuilders.manage:
+    description: Permission to set the region that should be copied
+    default: false
+
