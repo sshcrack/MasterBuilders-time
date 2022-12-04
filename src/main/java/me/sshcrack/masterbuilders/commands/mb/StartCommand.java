@@ -22,10 +22,13 @@ import com.sk89q.worldguard.session.handler.GameModeFlag;
 import me.sshcrack.masterbuilders.CommandResponse;
 import me.sshcrack.masterbuilders.Main;
 import me.sshcrack.masterbuilders.commands.SubCommand;
-import me.sshcrack.masterbuilders.tools.LocTools;
-import me.sshcrack.masterbuilders.tools.Tools;
-import me.sshcrack.masterbuilders.tools.TopicSelectInventory;
-import me.sshcrack.masterbuilders.tools.WG;
+import me.sshcrack.masterbuilders.message.MessageManager;
+import me.sshcrack.masterbuilders.tools.*;
+import me.sshcrack.masterbuilders.tools.timer.TeamTimer;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -51,15 +54,30 @@ public class StartCommand extends SubCommand {
             return new CommandResponse("start.not_in_team");
         }
 
+        FileConfiguration config = Main.plugin.getConfig();
         String teamId = playerTeam.getName();
         String topic = Main.plugin.getConfig().getString(String.format("selected.%s", teamId));
         if (topic == null) {
             player.playSound(player.getLocation(), Sound.ENTITY_WARDEN_SONIC_BOOM, 1, 0);
-            TopicSelectInventory.INVENTORY.open(player);
+            List<String> available = config.getStringList("topics");
+
+            TextComponent standard = new TextComponent(MessageManager.getMessage("start.topic_select"));
+            player.sendMessage(standard);
+
+            for (int i = 0; i < available.size(); i++) {
+                String s = available.get(i);
+                String command = String.format("/mb topic %s", i);
+
+                String msg = ChatColor.translateAlternateColorCodes('&', String.format("&7%s. &6%s", i+1, s));
+                TextComponent message = new TextComponent(msg);
+                message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, command));
+                message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Set topic").color(ChatColor.GOLD.asBungee()).create()));
+
+                player.sendMessage(message);
+            }
             return null;
         }
 
-        FileConfiguration config = Main.plugin.getConfig();
         String startStr = config.getString("start");
         String endStr = config.getString("end");
         String innerStartStr = config.getString("inner-start");
@@ -153,11 +171,22 @@ public class StartCommand extends SubCommand {
         org.bukkit.World overworld = Bukkit.getWorld("world");
 
 
+        if (!GlobalVars.timers.containsKey(teamId)) {
+            TeamTimer timer = new TeamTimer(teamId);
+            GlobalVars.timers.put(teamId, timer);
+        }
+
+        TeamTimer timer = GlobalVars.timers.get(teamId);
+
+
         DefaultDomain domain = innerReg.getMembers();
         domain.removeAll();
-        for (OfflinePlayer oPlayer : playerTeam.getPlayers()) {
-            domain.addPlayer(oPlayer.getUniqueId());
+        if(timer.getTimeLeft() > 0) {
+            for (OfflinePlayer oPlayer : playerTeam.getPlayers()) {
+                domain.addPlayer(oPlayer.getUniqueId());
+            }
         }
+
         innerReg.setMembers(domain);
         try {
             innerReg.setParent(reg);

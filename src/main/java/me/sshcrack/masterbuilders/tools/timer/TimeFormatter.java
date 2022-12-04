@@ -19,7 +19,6 @@ public class TimeFormatter {
     }
 
     public static String formatTime(long millis) {
-
         long secondsInMillis = 1000;
         long minuteInMillis = secondsInMillis * 60;
         long hourInMillis = minuteInMillis * 60;

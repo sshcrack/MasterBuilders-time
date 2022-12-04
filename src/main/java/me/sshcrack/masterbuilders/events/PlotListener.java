@@ -72,8 +72,10 @@ public class PlotListener implements Listener {
         GlobalVars.inRegions.put(tN, list);
 
         boolean someInPlot = list.size() != 0;
-        if (!GlobalVars.timers.containsKey(tN))
-            GlobalVars.timers.put(tN, new TeamTimer(tN));
+        if (!GlobalVars.timers.containsKey(tN)) {
+            TeamTimer timer = new TeamTimer(tN);
+            GlobalVars.timers.put(tN, timer);
+        }
 
         TeamTimer timer = GlobalVars.timers.get(tN);
         if (someInPlot) {
@@ -123,7 +125,9 @@ public class PlotListener implements Listener {
         from.setY(min.getY());
         from.setX(Math.floor(from.getX()));
         from.setZ(Math.floor(from.getZ()));
-        boolean between = Tools.isBetween(min, from, max);
+
+        Bukkit.getLogger().info(String.format("%s", from));
+        boolean between = Tools.isBetween(min, from, max, 1);
         if (!between)
             return;
 

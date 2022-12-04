@@ -86,6 +86,7 @@ public class Main extends JavaPlugin {
         mbParent.addSubCommand(new StartPortalCommand());
         mbParent.addSubCommand(new SpawnCommand());
         mbParent.addSubCommand(new SpawnSetCommand());
+        mbParent.addSubCommand(new TopicCommand());
 
         new CustomCommand("mb", mbParent, "masterbuilders.standard", "Manage teams with this command",
                 getConfig().getStringList("command.template"));

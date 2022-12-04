@@ -23,6 +23,7 @@ leave:
   left: "&aTeam left."
   left_passive: "&7Player &6%s&7 left your team."
 start:
+  topic_select: "&7Which &6topic &7 do you want to build?"
   not_in_team: "&cYou have to be in a team."
   topic:
     title: "&6Select topic"
@@ -32,6 +33,14 @@ timer:
     dateFormat: '%s days %s:%s:%s'
     hourFormat: '%s:%s:%s'
     minuteFormat: '%s:%s'
+topic:
+  team_required: "&cYou have to be in a team to set a topic."
+  already_set: "&6Topic has already been set."
+  set: "&7Topic to &6%s &7set."
+  invalid: "&cInvalid topic given."
 scoreboard:
   topic: "Topic: "
   time_left: "Time left: "
+
+time_up:
+  title: "&6Time's up!"

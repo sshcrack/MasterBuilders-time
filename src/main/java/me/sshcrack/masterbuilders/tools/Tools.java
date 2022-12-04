@@ -43,12 +43,16 @@ public class Tools {
     }
 
     public static boolean isBetween(Location l1, Location loc, Location l2) {
-        double x1 = Math.min(l1.getX(), l2.getX());
-        double y1 = Math.min(l1.getY(), l2.getY());
-        double z1 = Math.min(l1.getZ(), l2.getZ());
-        double x2 = Math.max(l1.getX(), l2.getX());
-        double y2 = Math.max(l1.getY(), l2.getY());
-        double z2 = Math.max(l1.getZ(), l2.getZ());
+        return Tools.isBetween(l1, loc, l2, 0);
+    }
+
+    public static boolean isBetween(Location l1, Location loc, Location l2, int distance) {
+        double x1 = Math.min(l1.getX(), l2.getX()) -distance;
+        double y1 = Math.min(l1.getY(), l2.getY()) - distance;
+        double z1 = Math.min(l1.getZ(), l2.getZ()) - distance;
+        double x2 = Math.max(l1.getX(), l2.getX()) + distance;
+        double y2 = Math.max(l1.getY(), l2.getY()) + distance;
+        double z2 = Math.max(l1.getZ(), l2.getZ()) + distance;
 
         return loc.getX() >= x1 && loc.getX() <= x2
                 && loc.getY() >= y1 && loc.getY() <= y2

@@ -49,7 +49,7 @@ public class AcceptCommand extends SubCommand {
         }
 
         team.addPlayer(player);
-        MessageManager.sendMessageF(matchingPlayers, "passive_join", player.getName());
+        MessageManager.sendMessageF(matchingPlayers, "accept.passive_join", player.getName());
         return new CommandResponse("accept.joined");
     }
 
