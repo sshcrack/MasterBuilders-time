@@ -1,4 +1,4 @@
-package me.sshcrack.masterbuilders.tools;
+package me.sshcrack.masterbuilders.tools.thread;
 
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.WorldEdit;
@@ -20,6 +20,10 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.sshcrack.masterbuilders.CommandResponse;
 import me.sshcrack.masterbuilders.Main;
 import me.sshcrack.masterbuilders.message.MessageManager;
+import me.sshcrack.masterbuilders.tools.GlobalVars;
+import me.sshcrack.masterbuilders.tools.LocTools;
+import me.sshcrack.masterbuilders.tools.Tools;
+import me.sshcrack.masterbuilders.tools.WG;
 import me.sshcrack.masterbuilders.tools.timer.TeamTimer;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -37,34 +41,14 @@ import xyz.xenondevs.particle.ParticleEffect;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StartCommandThread implements Runnable {
-    private CommandSender sender;
-    private String label;
-    private String[] args;
-    private Runnable doneCallback;
-
+public class StartCommandThread extends ThreadCommand {
     public StartCommandThread(CommandSender sender, String label, String[] args) {
-        this.sender = sender;
-        this.label = label;
-        this.args = args;
+        super(sender, label, args);
     }
+
 
     @Override
-    public void run() {
-        CommandResponse resp = innerRun();
-
-        if(this.doneCallback != null)
-            this.doneCallback.run();
-
-        if(resp != null)
-            resp.sendResponseMessage(sender);
-    }
-
-    public void doneCallback(Runnable func) {
-        this.doneCallback = func;
-    }
-
-    private CommandResponse innerRun() {
+    public CommandResponse onCommand(CommandSender sender, String label, String[] args) {
         if (!(sender instanceof Player))
             return new CommandResponse("onlyplayer");
 
@@ -153,6 +137,7 @@ public class StartCommandThread implements Runnable {
             Bukkit.getLogger().info(String.format("Plot is x: %s y: %s z: %s dir %s", plot.getX(), plot.getY(), plot.getZ(), dir));
             Bukkit.getLogger().info(String.format("Placing new area at %s with size %s and offset %s Region start: %s and end: %s", placeVec, maxSize, offset, vecStart, vecEnd));
 
+            MessageManager.sendMessage(player, "start.creating_plot");
             try (EditSession editSession = WorldEdit.getInstance().newEditSession(world)) {
                 Operation operation = new ForwardExtentCopy(
                         world, region, editSession, placeVec
@@ -271,4 +256,5 @@ public class StartCommandThread implements Runnable {
         player.playSound(tpLoc, Sound.BLOCK_BEEHIVE_ENTER, 1, 0);
         return null;
     }
+
 }

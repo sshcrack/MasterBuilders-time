@@ -1,14 +1,17 @@
 package me.sshcrack.masterbuilders.commands.mb;
 
 import me.sshcrack.masterbuilders.CommandResponse;
+import me.sshcrack.masterbuilders.Main;
 import me.sshcrack.masterbuilders.commands.SubCommand;
 import me.sshcrack.masterbuilders.message.MessageManager;
 import me.sshcrack.masterbuilders.tools.Tools;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -28,6 +31,11 @@ public class CreateCommand extends SubCommand {
         String name = args[0].toLowerCase();
         if(sc.getTeam(name) != null)
             return new CommandResponse("create.exists");
+
+        FileConfiguration config = Main.plugin.getConfig();
+        List<String> excluded = config.getStringList("blacklisted_regions");
+        if(excluded.contains(name) || excluded.contains(name + "-inner"))
+            return new CommandResponse("create.blacklisted");
 
         Team team = sc.registerNewTeam(name);
         team.addPlayer(player);

@@ -23,13 +23,16 @@ create:
   team_leave: "&cYou can't be in a team to create one"
   created: "&aTeam &6%s &acreated!"
   exists: "&cA team with that name exists already."
+  blacklisted: "&cYou can't name your team like this. The name is blacklisted."
 leave:
   already: "&6Already not in a team"
   left: "&aTeam left."
   left_passive: "&7Player &6%s&7 left your team."
+  deleting_plot: "&7Deleting your build..."
 start:
   topic_select: "&7Which &6topic &7 do you want to build?"
   not_in_team: "&cYou have to be in a team."
+  creating_plot: "&7Creating your plot to build..."
   topic:
     title: "&6Select topic"
     selected: "&7Selected topic &6%s"

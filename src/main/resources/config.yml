@@ -12,3 +12,5 @@ build_time:
   - 5400
   - 2700
   - 1350
+blacklisted_regions:
+  - spawn

@@ -19,6 +19,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPortalEnterEvent;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.scoreboard.Team;
@@ -109,6 +111,10 @@ public class PlotListener implements Listener {
             GlobalVars.scoreboards.get(uuid).show();
         }
         /*}*/
+    }
+
+    @EventHandler
+    public void onEggUse(PlayerInteractEvent e) {
     }
 
     @EventHandler
