@@ -2,6 +2,9 @@ onlyplayer: "Only a player can use this command!"
 noPerm: "Not enough permissions to use this command"
 invalidArgs: "Invalid Arguments given"
 
+general:
+  already_executing: "&cHold tight, command is executing."
+  running: "&7Running command..."
 invite:
   not_matching: "Player could not be found"
   team_required: "&cCreate a team before you can invite players."

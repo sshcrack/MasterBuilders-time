@@ -41,6 +41,7 @@ public class StartCommandThread implements Runnable {
     private CommandSender sender;
     private String label;
     private String[] args;
+    private Runnable doneCallback;
 
     public StartCommandThread(CommandSender sender, String label, String[] args) {
         this.sender = sender;
@@ -52,8 +53,15 @@ public class StartCommandThread implements Runnable {
     public void run() {
         CommandResponse resp = innerRun();
 
+        if(this.doneCallback != null)
+            this.doneCallback.run();
+
         if(resp != null)
             resp.sendResponseMessage(sender);
+    }
+
+    public void doneCallback(Runnable func) {
+        this.doneCallback = func;
     }
 
     private CommandResponse innerRun() {
@@ -228,7 +236,7 @@ public class StartCommandThread implements Runnable {
         Bukkit.getLogger().info(String.format("Spawn: x: %s, y: %s, z: %s", spawn.getX(), spawn.getY(), spawn.getZ()));
         Bukkit.getLogger().info(String.format("TpLoc: x: %s, y: %s, z: %s", tpLoc.getX(), tpLoc.getY(), tpLoc.getZ()));
 
-        player.teleport(tpLoc);
+        player.teleportAsync(tpLoc).join();
 
         ArrayList<Location> locs = new ArrayList<>();
         for(int i = 0; i < 10; i++) {
