@@ -28,23 +28,29 @@ public class TeamTimer {
     private final ArrayList<Runnable> onTimeEnd = new ArrayList<>();
 
     public TeamTimer(String teamName) {
+        teamName = teamName.toLowerCase();
         this.path = String.format("time.%s", teamName);
         FileConfiguration config = Main.plugin.getConfig();
 
-        int startTime = config.getInt("build_time");
+        Team team = Tools.getMainScoreboard().getTeam(teamName);
+        assert team != null;
+        int teamSize = Math.min(team.getPlayers().size() -1, 0);
+
+        int startTime = config.getIntegerList("build_time").get(teamSize);
         this.timeLeft = config.getInt(this.path, startTime);
 
+        String finalTeamName = teamName;
         this.addTimeEndEvent(() -> {
-            ProtectedRegion r = WG.getOverworldRegion(teamName + "-inner");
+            ProtectedRegion r = WG.getOverworldRegion(finalTeamName + "-inner");
             if(r == null)
                 return;
 
             DefaultDomain domain = r.getMembers();
             domain.removeAll();
 
-            Team team = Tools.getMainScoreboard().getTeam(teamName);
-            if(team != null) {
-                for (OfflinePlayer offlinePlayer : team.getPlayers()) {
+            Team innerTeam = Tools.getMainScoreboard().getTeam(finalTeamName);
+            if(innerTeam != null) {
+                for (OfflinePlayer offlinePlayer : innerTeam.getPlayers()) {
                     if(!offlinePlayer.isOnline())
                         continue;
 

@@ -29,6 +29,8 @@ public class PlotCommand extends SubCommand {
 
         config.set("plot", LocTools.locToStr(loc));
         player.sendMessage("Region set.");
+
+        Main.plugin.save();
         return null;
     }
 

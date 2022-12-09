@@ -1,10 +1,12 @@
 package me.sshcrack.masterbuilders.commands.mb;
 
+import com.sk89q.worldguard.protection.managers.RegionManager;
 import me.sshcrack.masterbuilders.CommandResponse;
 import me.sshcrack.masterbuilders.commands.SubCommand;
 import me.sshcrack.masterbuilders.message.MessageManager;
 import me.sshcrack.masterbuilders.tools.GlobalVars;
 import me.sshcrack.masterbuilders.tools.Tools;
+import me.sshcrack.masterbuilders.tools.WG;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.HumanEntity;
@@ -41,12 +43,17 @@ public class AcceptCommand extends SubCommand {
         if(!invitedPlayers.contains(player.getUniqueId()))
             return new CommandResponse("accept.not_invited");
 
-
         Team team = sc.getEntityTeam(matchingPlayers);
         if(team == null) {
             player.sendMessage("Could not join team, team no longer exists");
             return null;
         }
+
+        RegionManager m = WG.getOverworldManager();
+        boolean hasPlot = m.hasRegion(team.getName().toLowerCase());
+
+        if(hasPlot)
+            return new CommandResponse("accept.already_started");
 
         team.addPlayer(player);
         MessageManager.sendMessageF(matchingPlayers, "accept.passive_join", player.getName());

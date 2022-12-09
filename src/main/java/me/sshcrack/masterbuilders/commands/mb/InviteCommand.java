@@ -1,7 +1,9 @@
 package me.sshcrack.masterbuilders.commands.mb;
 
 import me.sshcrack.masterbuilders.CommandResponse;
+import me.sshcrack.masterbuilders.Main;
 import me.sshcrack.masterbuilders.commands.SubCommand;
+import me.sshcrack.masterbuilders.message.Message;
 import me.sshcrack.masterbuilders.message.MessageManager;
 import me.sshcrack.masterbuilders.tools.GlobalVars;
 import me.sshcrack.masterbuilders.tools.Tools;
@@ -10,8 +12,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Team;
 import xyz.xenondevs.particle.ParticleBuilder;
 import xyz.xenondevs.particle.ParticleEffect;
 
@@ -38,13 +42,23 @@ public class InviteCommand extends SubCommand {
         if (matchingPlayers.size() == 0)
             return new CommandResponse("invite.not_matching");
 
-        boolean inTeam = Tools.getMainScoreboard().getEntityTeam(player) != null;
+        Team team = Tools.getMainScoreboard().getEntityTeam(player);
+        boolean inTeam = team != null;
         if (!inTeam)
             return new CommandResponse("invite.team_required");
 
         Player matchedPlayer = matchingPlayers.get(0);
         if (matchedPlayer == player)
             return new CommandResponse("invite.invite_self");
+
+
+
+        FileConfiguration config = Main.plugin.getConfig();
+        List<Integer> buildTimes = config.getIntegerList("build_time");
+        if((team.getPlayers().size() +1) > buildTimes.size()){
+            MessageManager.sendMessageF(player, "invite.too_many", String.valueOf(buildTimes.size()));
+            return null;
+        }
 
         MessageManager.sendMessageF(player, "invite.invited", toMatch);
         String msg = MessageManager.getMessageF("invite.invite_message", player.getName());
@@ -61,6 +75,7 @@ public class InviteCommand extends SubCommand {
 
         if (!newList.contains(matchedPlayer.getUniqueId()))
             newList.add(matchedPlayer.getUniqueId());
+
 
         new ParticleBuilder(ParticleEffect.SCULK_CHARGE_POP,
                 matchedPlayer

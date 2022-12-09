@@ -8,4 +8,7 @@ topics:
   - Mouse
   - Ur Mom
 offset: 5
-build_time: 2700
+build_time:
+  - 5400
+  - 2700
+  - 1350

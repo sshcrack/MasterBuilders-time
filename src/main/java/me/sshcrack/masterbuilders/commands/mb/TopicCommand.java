@@ -36,7 +36,7 @@ public class TopicCommand extends SubCommand {
         if(team == null)
             return new CommandResponse("topic.team_required");
 
-        boolean alreadySelected = config.getString(String.format("selected.%s", team.getName())) != null;
+        boolean alreadySelected = config.getString(String.format("selected.%s", team.getName().toLowerCase())) != null;
         if(alreadySelected)
             return new CommandResponse("topic.already_set");
 
@@ -51,7 +51,7 @@ public class TopicCommand extends SubCommand {
             return new CommandResponse("topic.invalid");
 
         String topic = available.get(selected);
-        config.set(String.format("selected.%s", team.getName()), topic);
+        config.set(String.format("selected.%s", team.getName().toLowerCase()), topic);
         for (OfflinePlayer offline : team.getPlayers()) {
             if(offline.isOnline()) {
                 Player p = offline.getPlayer();

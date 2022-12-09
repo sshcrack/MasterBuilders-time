@@ -1,9 +1,13 @@
 package me.sshcrack.masterbuilders.tools;
 
+import me.sshcrack.masterbuilders.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public class LocTools {
     public static Location strToLoc(@NotNull String str) {
@@ -45,5 +49,26 @@ public class LocTools {
         pitch = loc.getPitch();
 
         return String.format("%,.2f,%,.2f,%,.2f,%f,%f@%s", x, y, z, yaw, pitch, loc.getWorld().getName());
+    }
+    public static Location getLowest(@NotNull Location start, Location end) {
+        double x = Math.min(start.getX(), end.getX());
+        double y = Math.min(start.getY(), end.getY());
+        double z = Math.min(start.getZ(), end.getZ());
+
+        return new Location(start.getWorld(), x, y, z);
+    }
+
+    public static Location lowestToConfigStart(@NotNull Location lowest, @NotNull Location diff) {
+        FileConfiguration config = Main.plugin.getConfig();
+        Location start = LocTools.strToLoc(Objects.requireNonNull(config.getString("start")));
+        Location end = LocTools.strToLoc(Objects.requireNonNull(config.getString("end")));
+
+        assert start != null;
+        assert end != null;
+
+        Location configLowest = LocTools.getLowest(start, end);
+        Location offset = start.clone().subtract(configLowest);
+
+        return lowest.clone().add(offset);
     }
 }

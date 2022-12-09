@@ -8,12 +8,14 @@ invite:
   invited: "&7Player &6%s&7 has been invited."
   invite_message: "&7You have been invited by &6%s&7 to their team. Click &6&lhere&r&7 to join"
   invite_self: "&cYou can't invite yourself."
+  too_many: "&cYou can't invite any more players, maximum is %s"
 accept:
   not_found: "&cPlayer that invited you could not be found."
   joined: "&6Joined team."
   passive_join: "&7Player &6%s&7 joined your team."
   already_in_team: "&cYou are already in a team."
   not_invited: "&cYou have not been invited to that team."
+  already_started: "&cThe team has already started to build."
 create:
   team_leave: "&cYou can't be in a team to create one"
   created: "&aTeam &6%s &acreated!"

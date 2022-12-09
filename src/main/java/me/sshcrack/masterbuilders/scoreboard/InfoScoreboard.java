@@ -53,7 +53,7 @@ public class InfoScoreboard implements ViewProvider {
     public List<String> getLines(ViewContext viewContext) {
         long onlinePlayers = this.team.getPlayers().stream().filter(OfflinePlayer::isOnline).count();
         long total = this.team.getPlayers().size();
-        String topic = Main.plugin.getConfig().getString(String.format("selected.%s", this.team.getName()));
+        String topic = Main.plugin.getConfig().getString(String.format("selected.%s", this.team.getName().toLowerCase()));
 
         EntryBuilder entryBuilder = new EntryBuilder();
         entryBuilder.blank();

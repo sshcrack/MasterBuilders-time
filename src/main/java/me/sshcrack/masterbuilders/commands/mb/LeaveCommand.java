@@ -29,6 +29,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
 
 import java.util.List;
+import java.util.Locale;
 
 public class LeaveCommand extends SubCommand {
 
@@ -43,7 +44,7 @@ public class LeaveCommand extends SubCommand {
             return new CommandResponse("leave.already");
 
 
-        String teamName = playerTeam.getName();
+        String teamName = playerTeam.getName().toLowerCase();
         playerTeam.removePlayer(player);
         for (OfflinePlayer offlineP : playerTeam.getPlayers()) {
             if (!offlineP.isOnline())
@@ -60,6 +61,7 @@ public class LeaveCommand extends SubCommand {
                 BlockVector3 end = region.getMaximumPoint();
                 World world = Tools.vanillaToSketchyWorld(Bukkit.getWorld("world"));
 
+                Bukkit.getLogger().info(String.format("Removing plot from %s to %s", start, end));
                 try (EditSession editSession = WorldEdit.getInstance().newEditSession(world)) {
                     CuboidRegion editRegion = new CuboidRegion(start, end);
                     BlockState air = BukkitAdapter.adapt(Material.AIR.createBlockData());

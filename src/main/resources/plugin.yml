@@ -17,5 +17,5 @@ permissions:
     default: true
   masterbuilders.manage:
     description: Permission to set the region that should be copied
-    default: false
+    default: op
 

@@ -70,7 +70,7 @@ public class TopicSelectInventory implements InventoryProvider {
                             return;
                         }
 
-                        Main.plugin.getConfig().set(String.format("selected.%s", team.getName()), topic);
+                        Main.plugin.getConfig().set(String.format("selected.%s", team.getName().toLowerCase()), topic);
 
                         MessageManager.sendMessageF(player, "start.topic.selected", topic);
                         player.performCommand("mb start");

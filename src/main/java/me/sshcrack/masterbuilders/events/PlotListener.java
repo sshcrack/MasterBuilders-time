@@ -30,6 +30,7 @@ import java.util.UUID;
 
 public class PlotListener implements Listener {
     Main plugin;
+    ArrayList<UUID> teleporting = new ArrayList<>();
 
 
     public PlotListener(Main plugin) {
@@ -48,7 +49,7 @@ public class PlotListener implements Listener {
         if (t == null)
             return;
 
-        ProtectedCuboidRegion r = (ProtectedCuboidRegion) WG.getOverworldManager().getRegion(t.getName());
+        ProtectedCuboidRegion r = (ProtectedCuboidRegion) WG.getOverworldManager().getRegion(t.getName().toLowerCase());
         if (r == null)
             return;
 
@@ -60,7 +61,7 @@ public class PlotListener implements Listener {
         boolean inReg = Tools.isBetween(min, l, max);
 
 
-        String tN = t.getName();
+        String tN = t.getName().toLowerCase();
         ArrayList<UUID> list = GlobalVars.inRegions.getOrDefault(tN, new ArrayList<>());
         if (inReg) {
             if (!list.contains(uuid))
@@ -114,6 +115,12 @@ public class PlotListener implements Listener {
     public void onPortalEnter(PlayerTeleportEvent e) {
         Location min = StartPortal.getStartLoc();
         Location max = StartPortal.getEndLoc();
+        UUID uuid = e.getPlayer().getUniqueId();
+
+        if(teleporting.contains(uuid)) {
+            Bukkit.getLogger().info("Already in teleporting");
+            return;
+        }
 
         if (min == null || max == null)
             return;
@@ -131,6 +138,11 @@ public class PlotListener implements Listener {
         if (!between)
             return;
 
+        if(!teleporting.contains(uuid)) {
+            teleporting.add(uuid);
+            Bukkit.getLogger().info("Added to teleporting");
+        }
+
         e.setCancelled(true);
         FileConfiguration config = Main.plugin.getConfig();
         String spawnStr = config.getString("tp-spawn");
@@ -140,6 +152,7 @@ public class PlotListener implements Listener {
                 e.getPlayer().teleport(spawn);
         }
 
+        teleporting.remove(uuid);
         e.getPlayer().performCommand("mb start");
     }
 }

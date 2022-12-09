@@ -10,6 +10,7 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
 import java.util.List;
+import java.util.Locale;
 
 public class CreateCommand extends SubCommand {
 
@@ -24,7 +25,7 @@ public class CreateCommand extends SubCommand {
         if(playerTeam != null)
             return new CommandResponse("create.team_leave");
 
-        String name = args[0];
+        String name = args[0].toLowerCase();
         if(sc.getTeam(name) != null)
             return new CommandResponse("create.exists");
 

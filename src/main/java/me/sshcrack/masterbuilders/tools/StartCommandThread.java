@@ -1,4 +1,4 @@
-package me.sshcrack.masterbuilders.commands.mb;
+package me.sshcrack.masterbuilders.tools;
 
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.WorldEdit;
@@ -12,18 +12,14 @@ import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.world.World;
 import com.sk89q.worldedit.world.gamemode.GameModes;
 import com.sk89q.worldguard.domains.DefaultDomain;
-import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import com.sk89q.worldguard.session.handler.GameModeFlag;
 import me.sshcrack.masterbuilders.CommandResponse;
 import me.sshcrack.masterbuilders.Main;
-import me.sshcrack.masterbuilders.commands.SubCommand;
 import me.sshcrack.masterbuilders.message.MessageManager;
-import me.sshcrack.masterbuilders.tools.*;
 import me.sshcrack.masterbuilders.tools.timer.TeamTimer;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -38,12 +34,29 @@ import org.bukkit.util.Vector;
 import xyz.xenondevs.particle.ParticleBuilder;
 import xyz.xenondevs.particle.ParticleEffect;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class StartCommand extends SubCommand {
+public class StartCommandThread implements Runnable {
+    private CommandSender sender;
+    private String label;
+    private String[] args;
+
+    public StartCommandThread(CommandSender sender, String label, String[] args) {
+        this.sender = sender;
+        this.label = label;
+        this.args = args;
+    }
 
     @Override
-    public CommandResponse onCommand(CommandSender sender, String label, String[] args) {
+    public void run() {
+        CommandResponse resp = innerRun();
+
+        if(resp != null)
+            resp.sendResponseMessage(sender);
+    }
+
+    private CommandResponse innerRun() {
         if (!(sender instanceof Player))
             return new CommandResponse("onlyplayer");
 
@@ -250,39 +263,4 @@ public class StartCommand extends SubCommand {
         player.playSound(tpLoc, Sound.BLOCK_BEEHIVE_ENTER, 1, 0);
         return null;
     }
-
-    @Override
-    public String getCommand() {
-        return "start";
-    }
-
-    @Override
-    public String getNode() {
-        return "standard";
-    }
-
-    @Override
-    public String getHelp() {
-        return "Start a new master builders game";
-    }
-
-    @Override
-    public String getArguments() {
-        return "";
-    }
-
-    @Override
-    public int getMinimumArguments() {
-        return 0;
-    }
-
-    @Override
-    public void onTabComplete(List<String> options, CommandSender sender, String label, String[] args) {
-    }
-
-    @Override
-    public int getMaximumArguments() {
-        return 0;
-    }
-
 }

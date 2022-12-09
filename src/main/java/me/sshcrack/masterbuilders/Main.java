@@ -60,7 +60,6 @@ public class Main extends JavaPlugin {
     }
 
     public void save() {
-        FileConfiguration config = this.getConfig();
         this.listener.save();
 
         this.saveConfig();
@@ -68,8 +67,6 @@ public class Main extends JavaPlugin {
 
     public void loadConfig() {
         FileConfiguration config = this.getConfig();
-
-        String template = config.getString("TEMPLATE");
     }
 
     public void setupCommands() {

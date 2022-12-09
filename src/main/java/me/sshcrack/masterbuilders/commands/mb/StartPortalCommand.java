@@ -30,9 +30,6 @@ public class StartPortalCommand extends SubCommand {
             return new CommandResponse("onlyplayer");
 
         Player player = (Player) sender;
-        if(!player.isOp())
-            return new CommandResponse("noPerm");
-
         FileConfiguration config = Main.plugin.getConfig();
 
         World world = player.getWorld();
